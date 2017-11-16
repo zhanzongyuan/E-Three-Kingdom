@@ -103,11 +103,11 @@
 
 - 词条卡片界面搜索框，浮动筛选按钮设计草稿：
 
-![search_preview](./image/search_preview1.jpg)
+![search_preview1的副本](/Users/applecz/Documents/androidLearning/E-Three-Kingdom/image/search_preview1.jpg)
 
 点击浮动按钮后，弹出筛选界面对话框如下：
 
-![search_preview的2](./image/search_preview的2.jpg)
+![search_preview的2](./image/search_preview2.jpg)
 
 - 预期详情界面如下：
 
