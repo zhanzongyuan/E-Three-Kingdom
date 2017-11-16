@@ -16,7 +16,7 @@ public class Character {
     private String birth;
     private String home_town;
     private String camp;
-    private String detail;
+    private String description;
     public Character(String i, String n, Bitmap ic, String g, String b, String ht, String c, String d) {
         id=i;
         name = n;
@@ -24,7 +24,7 @@ public class Character {
         gender=g;
         home_town=ht;
         camp=c;
-        detail=d;
+        description=d;
     }
     public String getId() {return id;}
     public String getName(){
@@ -45,7 +45,7 @@ public class Character {
     public String getCamp(){
         return camp;
     }
-    public String getDetail() {return detail;}
+    public String getDescription() {return description;}
     public void setName(String n){name=n;}
     public void setIcon(Bitmap ic){
         icon=ic;
@@ -62,5 +62,5 @@ public class Character {
     public void setCamp(String c){
         camp=c;
     }
-    public void setDetail(String d){detail=d;}
+    public void setDescription(String d){description=d;}
 }
