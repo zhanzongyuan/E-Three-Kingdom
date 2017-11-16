@@ -16,13 +16,15 @@ public class Character {
     private String birth;
     private String home_town;
     private String camp;
-    public Character(String i, String n, Bitmap ic, String g, String b, String ht, String c) {
+    private String detail;
+    public Character(String i, String n, Bitmap ic, String g, String b, String ht, String c, String d) {
         id=i;
         name = n;
         icon = ic;
         gender=g;
         home_town=ht;
         camp=c;
+        detail=d;
     }
     public String getId() {return id;}
     public String getName(){
@@ -43,6 +45,7 @@ public class Character {
     public String getCamp(){
         return camp;
     }
+    public String getDetail() {return detail;}
     public void setName(String n){name=n;}
     public void setIcon(Bitmap ic){
         icon=ic;
@@ -59,4 +62,5 @@ public class Character {
     public void setCamp(String c){
         camp=c;
     }
+    public void setDetail(String d){detail=d;}
 }
