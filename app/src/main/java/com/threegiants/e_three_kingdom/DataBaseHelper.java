@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
-import android.renderscript.ScriptGroup;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -12,22 +11,30 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
- * Created by r0bert on 17-11-14.
+ * The database helper of our project.
  */
 
 public class DataBaseHelper extends SQLiteOpenHelper {
 
     // The path of .db file.
-    private static String DB_PATH = Environment.getExternalStorageDirectory().getPath();
+    private static String DB_PATH =
+            Environment.getExternalStorageDirectory().getPath() +
+            "/" +
+            BuildConfig.APPLICATION_ID +
+            "/databases/";
 
     // The name of .db file.
-    private static String DB_NAME = "dictionary";
+    private static String DB_NAME = "dictionary.db";
 
-    // The database.
-    private SQLiteDatabase mDatabase;
+    // The database in assets.
+    private SQLiteDatabase packageDatabase;
 
     // The context.
     private final Context mContext;
+
+    SQLiteDatabase getPackageDatabase() {
+        return packageDatabase;
+    }
 
     /**
      * Constructor
@@ -35,12 +42,13 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * Keeps a reference of the context which calls the helper.
      * @param context The context which calls the helper.
      */
-    public DataBaseHelper(Context context) {
+    DataBaseHelper(Context context) {
         super(context, DB_NAME, null, 1);
 
         // Check if the .db file in external storage directory exists.
         String mPath = DB_PATH + DB_NAME;
-        SQLiteDatabase checkDB = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.OPEN_READONLY);
+        SQLiteDatabase checkDB =
+                SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.OPEN_READONLY);
         if (checkDB == null) {
             try {
                 copyDataBase();
@@ -51,9 +59,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             checkDB.close();
         }
 
+        // Open the database.
+        packageDatabase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.OPEN_READONLY);
+
         this.mContext = context;
     }
 
+    /**
+     * Copy the .db file from assets/ to external storage.
+     * @throws IOException Read and write .db file.
+     */
     private void copyDataBase() throws IOException {
 
         // Open the local .db file in assets.
