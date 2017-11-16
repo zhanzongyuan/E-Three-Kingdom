@@ -20,8 +20,6 @@ import java.util.List;
 
 public class CharactersActivity extends AppCompatActivity {
 
-    public static final String STORAGE_PERMISSION = "android.permission.READ_EXTERNAL_STORAGE";
-
     public boolean storagePermissionsGranted = false;
 
     //Characters Data
@@ -32,7 +30,7 @@ public class CharactersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Verify the storage permission.
-        verifyStoragePermissions(this);
+        MainActivity.verifyStoragePermissions(this);
 
         // Import data from db.
         importData();
@@ -52,43 +50,24 @@ public class CharactersActivity extends AppCompatActivity {
 
         // Generate character object for each row, and add it to characterData.
         while (mCursor.moveToNext()) {
+            int id = mCursor.getInt(0);
             String name = mCursor.getString(1);
-            String short_detail = mCursor.getString(2);
-            byte[] iconArr = mCursor.getBlob(3);
+            String gender = mCursor.getString(2);
+            String birth = mCursor.getString(3);
+            String homeTown = mCursor.getString(4);
+            String camp = mCursor.getString(5);
+            String shortDescription = mCursor.getString(6);
+            String description = mCursor.getString(7);
+            byte[] iconArr = mCursor.getBlob(8);
             Bitmap icon = BitmapFactory.decodeByteArray(iconArr, 0, iconArr.length);
-            //need to update @
-            //id、name、icon、gender、birth、hometown、camp
-            //id is unique
-            Character curCharacter = new Character("", name, icon, short_detail, "", "", "");
+            Character curCharacter = new Character(
+                    id, name, gender, birth, homeTown, camp, shortDescription, description, icon
+            );
             characterData.add(curCharacter);
         }
 
         mCursor.close();
         db.close();
-    }
-
-
-    /**
-     * Verify the storage permissions.
-     * Only READ_EXTERNAL_STORAGE for now.
-     * @param activity The activity which need to be verified.
-     */
-    public static void verifyStoragePermissions(Activity activity) {
-        try {
-            int permission = ActivityCompat.checkSelfPermission(
-                    activity,
-                    STORAGE_PERMISSION
-            );
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                        activity,
-                        new String[]{ STORAGE_PERMISSION },
-                        0
-                );
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
