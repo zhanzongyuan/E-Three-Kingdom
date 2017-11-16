@@ -7,21 +7,56 @@ import android.graphics.Bitmap;
  */
 
 public class Character {
+    //id、name、icon、gender、birth、hometown、camp
+    //id is unique
+    private String id;
     private String name;
-    private Bitmap head;
-    private String short_detail;
-    public Character(String n, Bitmap h, String sd) {
+    private Bitmap icon;
+    private String gender;
+    private String birth;
+    private String home_town;
+    private String camp;
+    public Character(String i, String n, Bitmap ic, String g, String b, String ht, String c) {
+        id=i;
         name = n;
-        head = h;
-        short_detail = sd;
+        icon = ic;
+        gender=g;
+        home_town=ht;
+        camp=c;
     }
+    public String getId() {return id;}
     public String getName(){
         return name;
     }
-    public Bitmap getHead(){
-        return head;
+    public Bitmap getIcon(){
+        return icon;
     }
-    public String getShortDetail(){
-        return short_detail;
+    public String getGender(){
+        return gender;
+    }
+    public String getBirth(){
+        return birth;
+    }
+    public String getHomeTown(){
+        return home_town;
+    }
+    public String getCamp(){
+        return camp;
+    }
+    public void setName(String n){name=n;}
+    public void setIcon(Bitmap ic){
+        icon=ic;
+    }
+    public void setGender(String g){
+        gender=g;
+    }
+    public void setBirth(String b){
+        birth=b;
+    }
+    public void setHomeTown(String ht){
+        home_town=ht;
+    }
+    public void setCamp(String c){
+        camp=c;
     }
 }

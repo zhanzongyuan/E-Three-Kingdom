@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by applecz on 2017/11/16.
+ * Created by zzy on 2017/11/16.
  */
 
 public class CardDataListActivity extends AppCompatActivity {
@@ -41,7 +41,10 @@ public class CardDataListActivity extends AppCompatActivity {
             String short_detail = mCursor.getString(2);
             byte[] iconArr = mCursor.getBlob(3);
             Bitmap icon = BitmapFactory.decodeByteArray(iconArr, 0, iconArr.length);
-            Character curCharacter = new Character(name, icon, short_detail);
+            //need to update @
+            //id、name、icon、gender、birth、hometown、camp
+            //id is unique
+            Character curCharacter = new Character("", name, icon, short_detail, "", "", "");
             characterData.add(curCharacter);
         }
 
