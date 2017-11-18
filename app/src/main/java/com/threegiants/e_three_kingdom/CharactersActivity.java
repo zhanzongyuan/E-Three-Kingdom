@@ -10,30 +10,96 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.yalantis.euclid.library.EuclidActivity;
+import com.yalantis.euclid.library.EuclidListAdapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zzy on 2017/11/16.
  */
 
-public class CharactersActivity extends AppCompatActivity {
+public class CharactersActivity extends EuclidActivity {
 
     public boolean storagePermissionsGranted = false;
 
     //Characters Data
     List<Character> characterData;
+    private EditText mEditText;
+    private EuclidListAdapter mAdapter;
+    private ListView listView;
+    private List<Map<String, Object>> profilesList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        listView = (ListView) findViewById(R.id.list_view);
+        mEditText = (EditText) findViewById(R.id.search_text);
+        mEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user change the text
+                mAdapter.getFilter().filter(cs.toString());
+            }
 
-        // Verify the storage permission.
-        MainActivity.verifyStoragePermissions(this);
+            @Override
+            public void beforeTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                //
+            }
 
-        // Import data from db.
-        importData();
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                //
+            }
+        });
+        setListViewOnLongClicked();
+
+    }
+
+    @Override
+    protected BaseAdapter getAdapter() {
+        Map<String, Object> profileMap;
+        profilesList = new ArrayList<>();
+
+        int[] avatars = {
+                R.drawable.niu_jin};
+        String[] names = getResources().getStringArray(R.array.array_names);
+
+        for (int i = 0; i < avatars.length; i++) {
+            profileMap = new HashMap<>();
+            profileMap.put(EuclidListAdapter.KEY_AVATAR, avatars[i]);
+            profileMap.put(EuclidListAdapter.KEY_NAME, names[i]);
+            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, getString(R.string.lorem_ipsum_short));
+            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, getString(R.string.lorem_ipsum_long));
+            profilesList.add(profileMap);
+        }
+        mAdapter = new EuclidListAdapter(this, R.layout.list_item, profilesList);
+        return mAdapter;
+    }
+
+    private void setListViewOnLongClicked() {
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView text = (TextView)view.findViewById(R.id.text_view_name);
+                mAdapter.removeData(text.getText().toString());
+                mAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
     }
 
 

@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -78,9 +79,12 @@ public class MainActivity extends AppCompatActivity {
     private DecodeBitmapTask decodeMapBitmapTask;
     private DecodeBitmapTask.Listener mapLoadListener;
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_main);
 
 
@@ -274,7 +278,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "收藏夹功能尚未开发，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
                         break;
                     case 1:
-                        Toast.makeText(MainActivity.this, "三国人物功能正在开发中，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, "三国人物功能正在开发中，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        intent.setClass(context, CharactersActivity.class);
+                        startActivity(intent);
                         break;
                     default:
                         Toast.makeText(MainActivity.this, "该功能正在开发中，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
