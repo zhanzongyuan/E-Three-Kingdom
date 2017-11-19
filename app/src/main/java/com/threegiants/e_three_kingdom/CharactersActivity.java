@@ -1,27 +1,35 @@
 package com.threegiants.e_three_kingdom;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.inputmethod.*;
 
 import com.yalantis.euclid.library.EuclidActivity;
 import com.yalantis.euclid.library.EuclidListAdapter;
+import com.yalantis.euclid.library.EuclidState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,16 +46,21 @@ public class CharactersActivity extends EuclidActivity {
 
     //Characters Data
     List<Character> characterData;
-    private EditText mEditText;
     private EuclidListAdapter mAdapter;
     private ListView listView;
-    private List<Map<String, Object>> profilesList;
-
+    private ImageButton returnButton; //返回按钮
+    private List<Map<String, Object>> profilesList; //listView的数据
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initialView();
+        setListViewOnLongClicked();
+    }
+
+    private void initialView() {
         listView = (ListView) findViewById(R.id.list_view);
         mEditText = (EditText) findViewById(R.id.search_text);
+        returnButton = (ImageButton) findViewById(R.id.return_button);
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
@@ -65,8 +78,26 @@ public class CharactersActivity extends EuclidActivity {
                 //
             }
         });
-        setListViewOnLongClicked();
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                CharactersActivity.this.setResult(R.integer.CharactersActivity_return_MainActivity, intent);
+                finish();
+            }
+        });
 
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                listView.setFocusable(true);
+                listView.setFocusableInTouchMode(true);
+                listView.requestFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(listView.getWindowToken(), 0);
+                return false;
+            }
+        });
     }
 
     @Override
@@ -159,5 +190,4 @@ public class CharactersActivity extends EuclidActivity {
             }
         }
     }
-
 }

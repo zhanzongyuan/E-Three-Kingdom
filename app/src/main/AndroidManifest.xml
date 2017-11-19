@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
+
         android:allowBackup="true"
         android:icon="@mipmap/app_icon_round"
         android:label="@string/app_name"
@@ -18,7 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CharactersActivity">
+        <activity android:name=".CharactersActivity"
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 

@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(MainActivity.this, "三国人物功能正在开发中，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.setClass(context, CharactersActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, 1);
                         break;
                     default:
                         Toast.makeText(MainActivity.this, "该功能正在开发中，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
@@ -359,5 +359,13 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == R.integer.CharactersActivity_return_MainActivity) {
+
+        }
+        //从CharacterActivity返回
     }
 }
