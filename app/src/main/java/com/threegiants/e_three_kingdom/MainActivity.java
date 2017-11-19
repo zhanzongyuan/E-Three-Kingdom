@@ -35,8 +35,9 @@ import com.threegiants.e_three_kingdom.utils.DecodeBitmapTask;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String STORAGE_PERMISSION = "android.permission.READ_EXTERNAL_STORAGE";
-
+    public static final String
+            STORAGE_READ_PERMISSION = "android.permission.READ_EXTERNAL_STORAGE",
+            STORAGE_WRITE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
 
 
     private final int[] pics = {R.drawable.scj, R.drawable.sg_rw,
@@ -345,14 +346,19 @@ public class MainActivity extends AppCompatActivity {
      */
     public static void verifyStoragePermissions(Activity activity) {
         try {
-            int permission = ActivityCompat.checkSelfPermission(
+            int read_permission = ActivityCompat.checkSelfPermission(
                     activity,
-                    STORAGE_PERMISSION
+                    STORAGE_READ_PERMISSION
             );
-            if (permission != PackageManager.PERMISSION_GRANTED) {
+            int write_permission = ActivityCompat.checkSelfPermission(
+                    activity,
+                    STORAGE_WRITE_PERMISSION
+            );
+            if (read_permission != PackageManager.PERMISSION_GRANTED ||
+                write_permission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                         activity,
-                        new String[]{ STORAGE_PERMISSION },
+                        new String[]{ STORAGE_READ_PERMISSION, STORAGE_WRITE_PERMISSION },
                         0
                 );
             }

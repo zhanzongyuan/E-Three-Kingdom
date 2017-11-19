@@ -3,9 +3,9 @@
     package="com.threegiants.e_three_kingdom">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/app_icon_round"
         android:label="@string/app_name"

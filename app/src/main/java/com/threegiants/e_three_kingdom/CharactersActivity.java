@@ -47,7 +47,6 @@ public class CharactersActivity extends EuclidActivity {
     //Characters Data
     List<Character> characterData;
     private List<Map<String, Object>> profilesList; //listView的数据
-    // TODO: 17-11-19 匹配数据类character与二级界面UI模板数据，UI模板数据有四个String，分别为名字，照片，短介绍，长介绍。 
     private EuclidListAdapter mAdapter;
     private ListView listView;
     private ImageButton returnButton; //返回按钮
@@ -107,16 +106,20 @@ public class CharactersActivity extends EuclidActivity {
         Map<String, Object> profileMap;
         profilesList = new ArrayList<>();
 
-        int[] avatars = {
-                R.drawable.niu_jin};
+        MainActivity.verifyStoragePermissions(this);
+        importData();
+
+        int[] avatars = { R.drawable.niu_jin };
         String[] names = getResources().getStringArray(R.array.array_names);
 
-        for (int i = 0; i < avatars.length; i++) {
+        for (int i = 0; i < characterData.size(); i++) {
+            Character curCharacter = characterData.get(i);
             profileMap = new HashMap<>();
-            profileMap.put(EuclidListAdapter.KEY_AVATAR, avatars[i]);
-            profileMap.put(EuclidListAdapter.KEY_NAME, names[i]);
-            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, getString(R.string.lorem_ipsum_short));
-            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, getString(R.string.lorem_ipsum_long));
+            // TODO: 17-11-19 Use Bitmap as avatar. (EuclidListAdapter.java lines 83)
+            profileMap.put(EuclidListAdapter.KEY_AVATAR, avatars[0]);
+            profileMap.put(EuclidListAdapter.KEY_NAME, curCharacter.getName());
+            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, curCharacter.getShortDescription());
+            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, curCharacter.getDescription());
             profilesList.add(profileMap);
         }
         mAdapter = new EuclidListAdapter(this, R.layout.list_item, profilesList);
@@ -182,13 +185,16 @@ public class CharactersActivity extends EuclidActivity {
                                            @NonNull int[] grantResults) {
         for (int i = 0; i < grantResults.length; i++) {
             switch(i) {
-                case 0: // STORAGE_PERMISSION
+                case 0: // STORAGE_READ_PERMISSION
                     if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
                         System.exit(0);
                     } else {
                         storagePermissionsGranted = true;
                     }
-
+                case 1:
+                    if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                        System.exit(0);
+                    }
             }
         }
     }

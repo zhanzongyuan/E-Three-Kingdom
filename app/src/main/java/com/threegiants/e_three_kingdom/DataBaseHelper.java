@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
+import android.util.Log;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +21,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // The path of .db file.
     private static String DB_PATH =
             Environment.getExternalStorageDirectory().getPath() +
-            "/" +
+            "/data/" +
             BuildConfig.APPLICATION_ID +
             "/databases/";
 
@@ -45,24 +47,23 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     DataBaseHelper(Context context) {
         super(context, DB_NAME, null, 1);
 
+        this.mContext = context;
+
         // Check if the .db file in external storage directory exists.
         String mPath = DB_PATH + DB_NAME;
-        SQLiteDatabase checkDB =
-                SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.OPEN_READONLY);
-        if (checkDB == null) {
+        (new File(DB_PATH)).mkdirs();
+
+        File checkDB = new File(mPath);
+        if (!checkDB.exists()) {
             try {
                 copyDataBase();
             } catch (IOException e) {
                 throw new Error(e);
             }
-        } else {
-            checkDB.close();
         }
 
         // Open the database.
         packageDatabase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.OPEN_READONLY);
-
-        this.mContext = context;
     }
 
     /**
@@ -76,7 +77,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         // Open the empty .db file.
         String outPath = DB_PATH + DB_NAME;
-        OutputStream mOutput = new FileOutputStream(outPath);
+        File outputFile = new File(outPath);
+        boolean makeFileSuccess = outputFile.createNewFile();
+        if (!makeFileSuccess) {
+            Log.e("[DataBaseHelper]", "Create dictionay.db failed.");
+        }
+        OutputStream mOutput = new FileOutputStream(outputFile);
 
         // Copy the .db file.
         byte[] buf = new byte[1024];
