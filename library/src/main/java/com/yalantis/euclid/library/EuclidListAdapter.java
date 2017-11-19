@@ -42,19 +42,19 @@ public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> impleme
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
+
         return mData.size();
     }
 
     @Override
     public Map<String, Object> getItem(int position) {
-        // TODO Auto-generated method stub
+
         return mData.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
+
         return position;
     }
 
