@@ -58,6 +58,7 @@ public abstract class EuclidActivity extends Activity {
     protected TextView mTextViewProfileName;
     protected TextView mTextViewProfileDescription;
     protected View mButtonProfile;
+    protected EditText mEditText;
 
     public static ShapeDrawable sOverlayShape;
     static int sScreenWidth;
@@ -94,7 +95,7 @@ public abstract class EuclidActivity extends Activity {
                 mInitialProfileButtonX = mButtonProfile.getX();
             }
         });
-
+        mEditText = (EditText) findViewById(R.id.search_text);
         findViewById(R.id.toolbar_profile_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,7 +137,7 @@ public abstract class EuclidActivity extends Activity {
      */
     private void showProfileDetails(Map<String, Object> item, final View view) {
         mListView.setEnabled(false);
-
+        mEditText.setEnabled(false);
         int profileDetailsAnimationDelay = getMaxDelayShowDetailsAnimation() * Math.abs(view.getTop())
                 / sScreenWidth;
 
@@ -438,6 +439,7 @@ public abstract class EuclidActivity extends Activity {
                     mProfileDetails.setVisibility(View.INVISIBLE);
 
                     mListView.setEnabled(true);
+                    mEditText.setEnabled(true);
                     mListViewAnimator.disableAnimations();
 
                     mState = EuclidState.Closed;
