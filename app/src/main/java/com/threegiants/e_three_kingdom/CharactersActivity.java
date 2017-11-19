@@ -47,7 +47,7 @@ public class CharactersActivity extends EuclidActivity {
     //Characters Data
     List<Character> characterData;
     private List<Map<String, Object>> profilesList; //listView的数据
-    // TODO: 17-11-19 匹配数据类character与二级界面UI模板数据，UI模板数据有四个String，分别为名字，照片，短介绍，长介绍。 
+    // TODO: 17-11-19 匹配数据类character与二级界面UI模板数据，UI模板数据有三个String和一个drawable int，分别为名字，照片，短介绍，长介绍。
     private EuclidListAdapter mAdapter;
     private ListView listView;
     private ImageButton returnButton; //返回按钮
