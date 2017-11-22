@@ -75,6 +75,8 @@ public abstract class EuclidActivity extends Activity {
     private AnimatorSet mOpenProfileAnimatorSet;
     private AnimatorSet mCloseProfileAnimatorSet;
     private Animation mProfileButtonShowAnimation;
+    //新加变量
+    private long choosed_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +125,7 @@ public abstract class EuclidActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mState = EuclidState.Opening;
+                choosed_id = id;
                 showProfileDetails((Map<String, Object>) parent.getItemAtPosition(position), view);
             }
         });
