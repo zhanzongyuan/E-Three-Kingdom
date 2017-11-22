@@ -1,6 +1,8 @@
 package com.threegiants.e_three_kingdom;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -126,13 +128,25 @@ public class CharactersActivity extends EuclidActivity {
         return mAdapter;
     }
 
+    private TextView text;
     private void setListViewOnLongClicked() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                TextView text = (TextView)view.findViewById(R.id.text_view_name);
-                mAdapter.removeData(text.getText().toString());
-                mAdapter.notifyDataSetChanged();
+                text = (TextView)view.findViewById(R.id.text_view_name);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CharactersActivity.this)
+                        .setTitle("移除人物")
+                        .setMessage("从人物列表移除"+text.getText().toString()+"?")
+                        .setNegativeButton("取消", null)
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mAdapter.removeData(text.getText().toString());
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 return true;
             }
         });
