@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -56,8 +57,9 @@ public class CharactersActivity extends EuclidActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initialView();
-        setListViewOnLongClicked();
+        initialView(); //初始化listview界面
+        setListViewOnClickedEvent(); //设置listview点击事件
+        setFavoriteButton(); //设置收藏按钮
     }
 
     private void initialView() {
@@ -103,6 +105,33 @@ public class CharactersActivity extends EuclidActivity {
         });
     }
 
+    private void setFavoriteButton() {
+        mButtonProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView favorite_button = (ImageView) mButtonProfile.findViewById(R.id.favorite_button);
+                TextView nameView = (TextView) findViewById(R.id.text_view_profile_name);
+                String name = nameView.getText().toString();
+                if (ifFavorite(name)) {
+                    favorite_button.setImageResource(R.drawable.favorite_border);
+                    addToFavoriteOrInverse(name, false);
+                } else {
+                    favorite_button.setImageResource(R.drawable.favorite);
+                    addToFavoriteOrInverse(name, true);
+                }
+            }
+        });
+    }
+
+    private void addToFavoriteOrInverse(String name, boolean if_favorite) {
+        // TODO: 17-11-23 张涵玮任务：根据人物姓名将收藏信息if_favorite储存
+    }
+
+    private boolean ifFavorite(String name) {
+        // TODO: 17-11-23 张涵玮任务：根据人物姓名获得其收藏信息
+        return false;
+    }
+
     @Override
     protected BaseAdapter getAdapter() {
         Map<String, Object> profileMap;
@@ -129,7 +158,7 @@ public class CharactersActivity extends EuclidActivity {
     }
 
     private TextView text;
-    private void setListViewOnLongClicked() {
+    private void setListViewOnClickedEvent() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
