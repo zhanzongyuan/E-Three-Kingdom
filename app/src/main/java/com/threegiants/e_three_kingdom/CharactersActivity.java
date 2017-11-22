@@ -171,6 +171,7 @@ public class CharactersActivity extends EuclidActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mAdapter.removeData(text.getText().toString());
+                                removeDataFromDB(text.getText().toString());
                                 mAdapter.notifyDataSetChanged();
                             }
                         });
@@ -181,6 +182,9 @@ public class CharactersActivity extends EuclidActivity {
         });
     }
 
+    private void removeDataFromDB(String name) {
+        // TODO: 17-11-23 张涵玮任务，根据人物姓名去除数据库中对应项
+    }
 
     // Import data from db
     protected void importData(){
