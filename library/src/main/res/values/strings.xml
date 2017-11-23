@@ -9,4 +9,5 @@
     <string name="title_following">Following</string>
     <string name="toolbar_bio">Bio</string>
     <string name="toolbar_details">Details</string>
+    <string name="search_hint">搜索关键词</string>
 </resources>

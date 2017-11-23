@@ -39,5 +39,5 @@ dependencies {
     compile 'com.android.support:support-core-utils:26.1.0'
     compile 'com.ramotion.cardslider:card-slider:0.1.0'
     testCompile 'junit:junit:4.12'
-    implementation project(':library')
+    compile project(':library')
 }

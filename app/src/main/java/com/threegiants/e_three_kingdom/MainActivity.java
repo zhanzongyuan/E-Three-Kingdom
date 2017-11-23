@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
     private final int[] pics = {R.drawable.scj, R.drawable.sg_rw,
             R.drawable.yy_qw, R.drawable.sg_zz, R.drawable.sg_jm,
             R.drawable.sg_sj, R.drawable.sg_dm, R.drawable.sg_gj};
-    private final int[]  backgrounds= {R.drawable.scj, R.drawable.sg_rw,
-            R.drawable.yy_qw, R.drawable.sg_zz, R.drawable.sg_jm,
-            R.drawable.sg_sj, R.drawable.sg_dm, R.drawable.sg_gj};
+    private final int[]  backgrounds= {R.drawable.scj_mbl, R.drawable.sg_rw_mbl,
+            R.drawable.yy_qw_mbl, R.drawable.sg_zz_mbl, R.drawable.sg_jm_mbl,
+            R.drawable.sg_sj_mbl, R.drawable.sg_dm_mbl, R.drawable.sg_gj_mbl};
     private final int[] descriptions = {R.string.text1, R.string.text2,
             R.string.text3, R.string.text4, R.string.text5,
             R.string.text6, R.string.text7, R.string.text8};
