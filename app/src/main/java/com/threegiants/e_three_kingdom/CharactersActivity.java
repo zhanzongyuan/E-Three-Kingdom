@@ -62,6 +62,13 @@ public class CharactersActivity extends EuclidActivity {
     private ListView listView;
     private ImageButton returnButton; //返回按钮
 
+    //Detail page textView object
+    private TextView profileName;
+    private TextView profileGender;
+    private TextView profileBirth;
+    private TextView profileHometown;
+    private TextView profileCamp;
+
     // DataBaseHelper instance.
     private DataBaseHelper dataBaseHelper;
 
@@ -78,6 +85,14 @@ public class CharactersActivity extends EuclidActivity {
         listView = (ListView) findViewById(R.id.list_view);
         mEditText = (EditText) findViewById(R.id.search_text);
         returnButton = (ImageButton) findViewById(R.id.return_button);
+
+        //Get profile info
+        profileName = (TextView) findViewById(R.id.text_view_profile_name);
+        profileGender = (TextView) findViewById(R.id.text_view_profile_gender);
+        profileBirth = (TextView) findViewById(R.id.text_view_profile_birth);
+        profileHometown = (TextView) findViewById(R.id.text_view_profile_hometown);
+        profileCamp = (TextView) findViewById(R.id.text_view_profile_camp);
+
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
@@ -128,9 +143,11 @@ public class CharactersActivity extends EuclidActivity {
                 if (ifFavorite(name)) {
                     favorite_button.setImageResource(R.drawable.favorite_border);
                     addToFavoriteOrInverse(name, false);
+                    Toast.makeText(CharactersActivity.this, "长按内容可纠错", Toast.LENGTH_SHORT).show();
                 } else {
                     favorite_button.setImageResource(R.drawable.favorite);
                     addToFavoriteOrInverse(name, true);
+                    Toast.makeText(CharactersActivity.this, "长按内容可纠错", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -205,11 +222,13 @@ public class CharactersActivity extends EuclidActivity {
             }
         });
 
+        //Set long-click edit windows
         final View nameText = findViewById(R.id.first_edit_block);
         nameText.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 setEditDialog(v);
+
                 dialog.show();
                 return false;
             }
@@ -219,8 +238,30 @@ public class CharactersActivity extends EuclidActivity {
         LayoutInflater factory = LayoutInflater.from(getApplicationContext());
         // 引入一个外部布局
         View contview = factory.inflate(R.layout.edit_dialog_layout, null);
+
+        //Get editDialog editText
+        EditText editName = (EditText) contview.findViewById(R.id.edit_name);
+        EditText editGender = (EditText) contview.findViewById(R.id.edit_gender);
+        EditText editBirth = (EditText) contview.findViewById(R.id.edit_birth);
+        EditText editHometown = (EditText) contview.findViewById(R.id.edit_hometown);
+        EditText editCamp = (EditText) contview.findViewById(R.id.edit_camp);
+
+        editName.setText(profileName.getText());
+        editGender.setText(profileGender.getText());
+        editBirth.setText(profileBirth.getText());
+        editHometown.setText(profileHometown.getText());
+        editCamp.setText(profileCamp.getText());
+
         Button btOK = (Button) contview.findViewById(R.id.edit_ok);
-        // btOK.setOnClickListener(new OnClickListener() {// 设置按钮的点击事件
+        btOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Changle character list
+
+                Toast.makeText(CharactersActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
         dialog=new AlertDialog.Builder(CharactersActivity.this).setView(contview).create();
     }
 
