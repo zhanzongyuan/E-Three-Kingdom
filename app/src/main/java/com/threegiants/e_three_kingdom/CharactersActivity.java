@@ -2,6 +2,7 @@ package com.threegiants.e_three_kingdom;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -19,10 +21,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -63,6 +67,7 @@ public class CharactersActivity extends EuclidActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initialView(); //初始化listview界面
         setListViewOnClickedEvent(); //设置listview点击事件
         setFavoriteButton(); //设置收藏按钮
@@ -173,6 +178,7 @@ public class CharactersActivity extends EuclidActivity {
     }
 
     private TextView text;
+    private Dialog dialog;
     private void setListViewOnClickedEvent() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -195,6 +201,24 @@ public class CharactersActivity extends EuclidActivity {
                 return true;
             }
         });
+
+        final View nameText = findViewById(R.id.first_edit_block);
+        nameText.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                setEditDialog(v);
+                dialog.show();
+                return false;
+            }
+        });
+    }
+    private void setEditDialog(View v){
+        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        // 引入一个外部布局
+        View contview = factory.inflate(R.layout.edit_dialog_layout, null);
+        Button btOK = (Button) contview.findViewById(R.id.edit_ok);
+        // btOK.setOnClickListener(new OnClickListener() {// 设置按钮的点击事件
+        dialog=new AlertDialog.Builder(CharactersActivity.this).setView(contview).create();
     }
 
 
@@ -264,6 +288,10 @@ public class CharactersActivity extends EuclidActivity {
             // TODO: 17-11-19 Use Bitmap as avatar. (EuclidListAdapter.java lines 83)
             profileMap.put(EuclidListAdapter.KEY_AVATAR, avatars[0]);
             profileMap.put(EuclidListAdapter.KEY_NAME, curCharacter.getName());
+            profileMap.put(EuclidListAdapter.KEY_GENDER, curCharacter.getGender());
+            profileMap.put(EuclidListAdapter.KEY_BIRTH, curCharacter.getBirth());
+            profileMap.put(EuclidListAdapter.KEY_HOMETOWN, curCharacter.getHomeTown());
+            profileMap.put(EuclidListAdapter.KEY_CAMP, curCharacter.getCamp());
             profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, curCharacter.getShortDescription());
             profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, curCharacter.getDescription());
             profilesList.add(profileMap);

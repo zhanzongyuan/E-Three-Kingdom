@@ -55,8 +55,14 @@ public abstract class EuclidActivity extends Activity {
     protected FrameLayout mToolbar;
     protected RelativeLayout mToolbarProfile;
     protected LinearLayout mProfileDetails;
+
     protected TextView mTextViewProfileName;
     protected TextView mTextViewProfileDescription;
+    protected TextView mTextViewProfileGender;
+    protected TextView mTextViewProfileBirth;
+    protected TextView mTextViewProfileHometown;
+    protected TextView mTextViewProfileCamp;
+
     protected View mButtonProfile;
     protected EditText mEditText;
 
@@ -88,8 +94,14 @@ public abstract class EuclidActivity extends Activity {
         mToolbar = (FrameLayout) findViewById(R.id.toolbar_list);
         mToolbarProfile = (RelativeLayout) findViewById(R.id.toolbar_profile);
         mProfileDetails = (LinearLayout) findViewById(R.id.wrapper_profile_details);
+
         mTextViewProfileName = (TextView) findViewById(R.id.text_view_profile_name);
         mTextViewProfileDescription = (TextView) findViewById(R.id.text_view_profile_description);
+        mTextViewProfileGender = (TextView) findViewById(R.id.text_view_profile_gender);
+        mTextViewProfileBirth = (TextView) findViewById(R.id.text_view_profile_birth);
+        mTextViewProfileHometown = (TextView) findViewById(R.id.text_view_profile_hometown);
+        mTextViewProfileCamp = (TextView) findViewById(R.id.text_view_profile_camp);
+
         mButtonProfile = findViewById(R.id.button_profile);
         mButtonProfile.post(new Runnable() {
             @Override
@@ -193,6 +205,10 @@ public abstract class EuclidActivity extends Activity {
         String description_full=item.get(EuclidListAdapter.KEY_DESCRIPTION_FULL).toString().replace("\\n", "\n");
         mTextViewProfileName.setText((String) item.get(EuclidListAdapter.KEY_NAME));
         mTextViewProfileDescription.setText(description_full);
+        mTextViewProfileGender.setText(item.get(EuclidListAdapter.KEY_GENDER).toString());
+        mTextViewProfileBirth.setText(item.get(EuclidListAdapter.KEY_BIRTH).toString());
+        mTextViewProfileHometown.setText(item.get(EuclidListAdapter.KEY_HOMETOWN).toString());
+        mTextViewProfileCamp.setText(item.get(EuclidListAdapter.KEY_CAMP).toString());
     }
 
     /**

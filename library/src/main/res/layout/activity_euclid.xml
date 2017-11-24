@@ -73,103 +73,117 @@
         android:visibility="invisible"
         android:clickable="true">
 
+
+        <LinearLayout
+            android:id="@+id/first_edit_block"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/text_view_profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    tools:text="SOPHIA"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="32sp"
+                    android:layout_marginLeft="11dp"/>
+
+                <TextView
+                    android:id="@+id/text_view_profile_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_green_light"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="15sp"
+                    android:text="男"
+                    android:layout_marginLeft="12dp" />
+
+
+                <TextView
+                    android:id="@+id/text_view_profile_birth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_green_light"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="15sp"
+                    android:text="2001"
+                    android:layout_marginLeft="12dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="祖籍:   "
+                    android:textColor="@android:color/holo_green_light"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="11dp" />
+
+                <TextView
+                    android:id="@+id/text_view_profile_hometown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_green_light"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="15sp"
+                    android:text="深圳" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="阵营:   "
+                    android:textColor="@android:color/holo_green_light"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="15sp"
+                    android:layout_marginLeft="11dp" />
+                <TextView
+                    android:id="@+id/text_view_profile_camp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/holo_green_light"
+                    android:fontFamily="sans-serif-light"
+                    android:textSize="15sp"
+                    android:text="中大" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
         <TextView
-            android:id="@+id/text_view_profile_name"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            tools:text="SOPHIA"
+            android:text="历史介绍："
+            android:textSize="18sp"
+            android:textColor="@color/orange"
             android:fontFamily="sans-serif-light"
-            android:textSize="32sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="5dp"/>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="性别:"
-                android:textColor="@android:color/holo_green_light"
-                android:fontFamily="sans-serif-light"
-                android:textSize="20sp"
-                android:layout_marginLeft="10dp" />
-            <TextView
-                android:id="@+id/text_view_gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_green_light"
-                android:fontFamily="sans-serif-light"
-                android:textSize="20sp"
-                android:text="男" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="生辰:"
-                android:textColor="@android:color/holo_green_light"
-                android:fontFamily="sans-serif-light"
-                android:textSize="20sp"
-                android:layout_marginLeft="20dp" />
-            <TextView
-                android:id="@+id/text_view_birth"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_green_light"
-                android:fontFamily="sans-serif-light"
-                android:textSize="20sp"
-                android:text="六岁" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="出生地:"
-                android:textColor="@android:color/holo_green_light"
-                android:fontFamily="sans-serif-light"
-                android:textSize="20sp"
-                android:layout_marginLeft="10dp" />
-            <TextView
-                android:id="@+id/text_view_hometown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_green_light"
-                android:fontFamily="sans-serif-light"
-                android:textSize="20sp"
-                android:text="深圳" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="阵营:"
-                android:textColor="@android:color/holo_green_light"
-                android:fontFamily="sans-serif-light"
-                android:textSize="20sp"
-                android:layout_marginLeft="20dp" />
-            <TextView
-                android:id="@+id/text_view_camp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@android:color/holo_green_light"
-                android:fontFamily="sans-serif-light"
-                android:textSize="20sp"
-                android:text="中大" />
-
-        </LinearLayout>
-
+            android:layout_margin="11dp"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -187,7 +201,7 @@
                 tools:text="@string/lorem_ipsum_long"
                 android:fontFamily="sans-serif"
                 android:textSize="18sp"
-                android:lineSpacingMultiplier="1.5"/>
+                android:lineSpacingMultiplier="1.3"/>
 
         </ScrollView>
 

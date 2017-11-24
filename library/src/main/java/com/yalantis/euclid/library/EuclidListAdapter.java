@@ -25,6 +25,10 @@ public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> impleme
 
     public static final String KEY_AVATAR = "avatar";
     public static final String KEY_NAME = "name";
+    public static final String KEY_GENDER = "gender";
+    public static final String KEY_BIRTH = "birth";
+    public static final String KEY_HOMETOWN = "hometown";
+    public static final String KEY_CAMP = "camp";
     public static final String KEY_DESCRIPTION_SHORT = "description_short";
     public static final String KEY_DESCRIPTION_FULL = "description_full";
 
