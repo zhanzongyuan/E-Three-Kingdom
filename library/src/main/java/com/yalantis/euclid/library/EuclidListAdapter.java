@@ -1,6 +1,11 @@
 package com.yalantis.euclid.library;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +19,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -84,10 +90,12 @@ public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> impleme
         System.out.println("position = " + position);
 
         if (mData.get(position) != null) {
-            Picasso.with(getContext()).load((Integer) mData.get(position).get(KEY_AVATAR))
+            viewHolder.mListItemAvatar.setImageBitmap((Bitmap) mData.get(position).get(KEY_AVATAR));
+/*          Uri uri = getImageUri(getContext(), (Bitmap) mData.get(position).get(KEY_AVATAR));
+            Picasso.with(getContext()).load(uri)
                     .resize(EuclidActivity.sScreenWidth, EuclidActivity.sProfileImageHeight).centerCrop()
-                    .placeholder(R.color.blue)
-                    .into(viewHolder.mListItemAvatar);
+                    .placeholder(R.color.orange)
+                    .into(viewHolder.mListItemAvatar);*/
             String description_short=mData.get(position).get(KEY_DESCRIPTION_SHORT).toString().replace("\\n", "\n");
             viewHolder.mListItemName.setText(mData.get(position).get(KEY_NAME).toString().toUpperCase());
             viewHolder.mListItemDescription.setText(description_short);

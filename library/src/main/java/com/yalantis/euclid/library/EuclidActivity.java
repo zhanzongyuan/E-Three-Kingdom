@@ -4,10 +4,14 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +34,7 @@ import com.nhaarman.listviewanimations.appearance.ViewAnimator;
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter;
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -175,14 +180,14 @@ public abstract class EuclidActivity extends Activity {
         }
 
         mOverlayListItemView.findViewById(R.id.view_avatar_overlay).setBackground(sOverlayShape);
-
-        Picasso.with(EuclidActivity.this).load((Integer) item.get(EuclidListAdapter.KEY_AVATAR))
+        Uri uri = getImageUri(EuclidActivity.this, (Bitmap) item.get(EuclidListAdapter.KEY_AVATAR));
+        Picasso.with(EuclidActivity.this).load(uri)
                 .resize(sScreenWidth, sProfileImageHeight).centerCrop()
-                .placeholder(R.color.blue)
+                .placeholder(R.color.orange)
                 .into((ImageView) mOverlayListItemView.findViewById(R.id.image_view_reveal_avatar));
-        Picasso.with(EuclidActivity.this).load((Integer) item.get(EuclidListAdapter.KEY_AVATAR))
+        Picasso.with(EuclidActivity.this).load(uri)
                 .resize(sScreenWidth, sProfileImageHeight).centerCrop()
-                .placeholder(R.color.blue)
+                .placeholder(R.color.orange)
                 .into((ImageView) mOverlayListItemView.findViewById(R.id.image_view_avatar));
 
         ((TextView) mOverlayListItemView.findViewById(R.id.text_view_name)).setText((String) item.get(EuclidListAdapter.KEY_NAME));
@@ -589,4 +594,10 @@ public abstract class EuclidActivity extends Activity {
         return CIRCLE_RADIUS_DP;
     }
 
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, null, null));
+        return uri;
+    }
 }
