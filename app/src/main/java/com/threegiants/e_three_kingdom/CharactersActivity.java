@@ -2,6 +2,7 @@ package com.threegiants.e_three_kingdom;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,6 +36,7 @@ import com.yalantis.euclid.library.EuclidActivity;
 import com.yalantis.euclid.library.EuclidListAdapter;
 import com.yalantis.euclid.library.EuclidState;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,7 +56,10 @@ public class CharactersActivity extends EuclidActivity {
     private EuclidListAdapter mAdapter;
     private ListView listView;
     private ImageButton returnButton; //返回按钮
-    
+
+    // DataBaseHelper instance.
+    private DataBaseHelper dataBaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,13 +129,47 @@ public class CharactersActivity extends EuclidActivity {
         });
     }
 
+    /**
+     * Add or remove a character from favorite.
+     * @param name The name of the character.
+     * @param if_favorite true to add, false to remove.
+     */
     private void addToFavoriteOrInverse(String name, boolean if_favorite) {
-        // TODO: 17-11-23 张涵玮任务：根据人物姓名将收藏信息if_favorite储存
+        SQLiteDatabase db =  dataBaseHelper.getPackageDatabase();
+
+        if (if_favorite) {
+            db.execSQL(
+                    "UPDATE characters" +
+                    "SET isFavorite = 1" +
+                    "WHERE name = " + name + ";"
+            );
+        } else {
+            db.execSQL(
+                    "UPDATE characters" +
+                    "SET isFavorite = 0" +
+                    "WHERE name = " + name + ";"
+            );
+        }
+        db.close();
     }
 
+    /**
+     * Check if a character is favourite.
+     * @param name The name of the character.
+     * @return isFavourite.
+     */
     private boolean ifFavorite(String name) {
-        // TODO: 17-11-23 张涵玮任务：根据人物姓名获得其收藏信息
-        return false;
+        SQLiteDatabase db = dataBaseHelper.getPackageDatabase();
+
+        // Check if the character is in the table.
+        Cursor c = db.rawQuery(
+                "SELECT isFavourite FROM characters WHERE name = " + name + " ;",
+                null
+        );
+        boolean charExist = c.getInt(0) == 1;
+        c.close();
+        db.close();
+        return charExist;
     }
 
     @Override
@@ -182,8 +222,15 @@ public class CharactersActivity extends EuclidActivity {
         });
     }
 
+
+    /**
+     * Permanently remove the character from the database.
+     * @param name The name of the character needs to be removed.
+     */
     private void removeDataFromDB(String name) {
-        // TODO: 17-11-23 张涵玮任务，根据人物姓名去除数据库中对应项
+        SQLiteDatabase db = dataBaseHelper.getPackageDatabase();
+        db.execSQL("DELETE FROM characters WHERE name = " + name + ";");
+        db.close();
     }
 
     // Import data from db
@@ -191,8 +238,8 @@ public class CharactersActivity extends EuclidActivity {
         characterData=new ArrayList<>();
 
         // Open our database.
-        DataBaseHelper mHelper = new DataBaseHelper(this);
-        SQLiteDatabase db = mHelper.getPackageDatabase();
+        dataBaseHelper = new DataBaseHelper(this);
+        SQLiteDatabase db = dataBaseHelper.getPackageDatabase();
 
         // Query all characters.
         Cursor mCursor = db.rawQuery("SELECT * FROM characters", null);
@@ -208,9 +255,11 @@ public class CharactersActivity extends EuclidActivity {
             String shortDescription = mCursor.getString(6);
             String description = mCursor.getString(7);
             byte[] iconArr = mCursor.getBlob(8);
+            String note = mCursor.getString(10);
             Bitmap icon = BitmapFactory.decodeByteArray(iconArr, 0, iconArr.length);
             Character curCharacter = new Character(
-                    id, name, gender, birth, homeTown, camp, shortDescription, description, icon
+                    id, name, gender, birth, homeTown, camp, shortDescription, description, icon,
+                    note
             );
             characterData.add(curCharacter);
         }
