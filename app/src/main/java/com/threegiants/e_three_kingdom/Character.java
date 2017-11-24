@@ -1,6 +1,7 @@
 package com.threegiants.e_three_kingdom;
 
 import android.graphics.Bitmap;
+import android.text.BoringLayout;
 
 /**
  * Class Character
@@ -18,9 +19,11 @@ public class Character {
     private String shortDescription;
     private String description;
     private Bitmap icon;
+    private String note;
 
     Character(
-        int i, String n, String g, String b, String ht, String c, String sd, String d, Bitmap ic
+        int i, String n, String g, String b, String ht, String c, String sd, String d, Bitmap ic,
+        String no
     ) {
         id = i;
         name = n;
@@ -31,6 +34,7 @@ public class Character {
         shortDescription = sd;
         description = d;
         icon = ic;
+        note = no;
     }
 
     public int getId() { return id; }
@@ -42,6 +46,7 @@ public class Character {
     public String getShortDescription() { return shortDescription; }
     public String getDescription() { return description; }
     public Bitmap getIcon() { return icon; }
+    public String getNote() { return note; }
 
     public void setId(int i) { id = i; }
     public void setName(String n){ name = n; }
@@ -52,4 +57,5 @@ public class Character {
     public void setShortDescription(String sd) { shortDescription = sd; }
     public void setDescription(String d) { description = d; }
     public void setIcon(Bitmap ic){ icon = ic; }
+    public void setNote(String no) { note = no; }
 }
