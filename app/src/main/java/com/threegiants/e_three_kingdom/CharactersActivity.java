@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -258,11 +259,14 @@ public class CharactersActivity extends EuclidActivity {
         int[] avatars = { R.drawable.niu_jin };
         String[] names = getResources().getStringArray(R.array.array_names);
 
+        Resources res = getResources();
+        Bitmap bmp = BitmapFactory.decodeResource(res, R.drawable.niu_jin);
+
         for (int i = 0; i < characterData.size(); i++) {
             Character curCharacter = characterData.get(i);
             profileMap = new HashMap<>();
             // TODO: 17-11-19 Use Bitmap as avatar. (EuclidListAdapter.java lines 83)
-            profileMap.put(EuclidListAdapter.KEY_AVATAR, avatars[0]);
+            profileMap.put(EuclidListAdapter.KEY_AVATAR, bmp);
             profileMap.put(EuclidListAdapter.KEY_NAME, curCharacter.getName());
             profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, curCharacter.getShortDescription());
             profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, curCharacter.getDescription());

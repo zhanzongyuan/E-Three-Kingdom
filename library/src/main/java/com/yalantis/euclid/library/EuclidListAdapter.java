@@ -1,6 +1,9 @@
 package com.yalantis.euclid.library;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +84,8 @@ public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> impleme
         System.out.println("position = " + position);
 
         if (mData.get(position) != null) {
-            Picasso.with(getContext()).load((Integer) mData.get(position).get(KEY_AVATAR))
+            Uri uri = getImageUri(getContext(), (Bitmap) mData.get(position).get(KEY_AVATAR));
+            Picasso.with(getContext()).load(uri)
                     .resize(EuclidActivity.sScreenWidth, EuclidActivity.sProfileImageHeight).centerCrop()
                     .placeholder(R.color.blue)
                     .into(viewHolder.mListItemAvatar);
@@ -191,5 +196,12 @@ public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> impleme
                 break;
             }
         }
+    }
+
+    private Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, null, null));
+        return uri;
     }
 }
