@@ -84,8 +84,9 @@ public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> impleme
                     .resize(EuclidActivity.sScreenWidth, EuclidActivity.sProfileImageHeight).centerCrop()
                     .placeholder(R.color.blue)
                     .into(viewHolder.mListItemAvatar);
+            String description_short=mData.get(position).get(KEY_DESCRIPTION_SHORT).toString().replace("\\n", "\n");
             viewHolder.mListItemName.setText(mData.get(position).get(KEY_NAME).toString().toUpperCase());
-            viewHolder.mListItemDescription.setText((String) mData.get(position).get(KEY_DESCRIPTION_SHORT));
+            viewHolder.mListItemDescription.setText(description_short);
             viewHolder.mViewOverlay.setBackground(EuclidActivity.sOverlayShape);
         }
 

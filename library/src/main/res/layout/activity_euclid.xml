@@ -69,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white"
+        android:background="@color/gray"
         android:visibility="invisible"
         android:clickable="true">
 
@@ -77,27 +77,117 @@
             android:id="@+id/text_view_profile_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/gray"
+            android:textColor="@color/white"
             tools:text="SOPHIA"
             android:fontFamily="sans-serif-light"
             android:textSize="32sp"
-            android:layout_margin="10dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="性别:"
+                android:textColor="@android:color/holo_green_light"
+                android:fontFamily="sans-serif-light"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp" />
+            <TextView
+                android:id="@+id/text_view_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_green_light"
+                android:fontFamily="sans-serif-light"
+                android:textSize="20sp"
+                android:text="男" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="生辰:"
+                android:textColor="@android:color/holo_green_light"
+                android:fontFamily="sans-serif-light"
+                android:textSize="20sp"
+                android:layout_marginLeft="20dp" />
+            <TextView
+                android:id="@+id/text_view_birth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_green_light"
+                android:fontFamily="sans-serif-light"
+                android:textSize="20sp"
+                android:text="六岁" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="出生地:"
+                android:textColor="@android:color/holo_green_light"
+                android:fontFamily="sans-serif-light"
+                android:textSize="20sp"
+                android:layout_marginLeft="10dp" />
+            <TextView
+                android:id="@+id/text_view_hometown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_green_light"
+                android:fontFamily="sans-serif-light"
+                android:textSize="20sp"
+                android:text="深圳" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="阵营:"
+                android:textColor="@android:color/holo_green_light"
+                android:fontFamily="sans-serif-light"
+                android:textSize="20sp"
+                android:layout_marginLeft="20dp" />
+            <TextView
+                android:id="@+id/text_view_camp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/holo_green_light"
+                android:fontFamily="sans-serif-light"
+                android:textSize="20sp"
+                android:text="中大" />
+
+        </LinearLayout>
+
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp" >
+
 
             <TextView
                 android:id="@+id/text_view_profile_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray"
+                android:textColor="@color/orange"
                 tools:text="@string/lorem_ipsum_long"
                 android:fontFamily="sans-serif"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:lineSpacingMultiplier="1.5"/>
 
         </ScrollView>
 

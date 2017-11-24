@@ -190,8 +190,9 @@ public abstract class EuclidActivity extends Activity {
      * @param item - data from adapter, that will be set into overlay view.
      */
     private void setProfileDetailsInfo(Map<String, Object> item) {
+        String description_full=item.get(EuclidListAdapter.KEY_DESCRIPTION_FULL).toString().replace("\\n", "\n");
         mTextViewProfileName.setText((String) item.get(EuclidListAdapter.KEY_NAME));
-        mTextViewProfileDescription.setText((String) item.get(EuclidListAdapter.KEY_DESCRIPTION_FULL));
+        mTextViewProfileDescription.setText(description_full);
     }
 
     /**

@@ -172,31 +172,6 @@ public class CharactersActivity extends EuclidActivity {
         return charExist;
     }
 
-    @Override
-    protected BaseAdapter getAdapter() {
-        Map<String, Object> profileMap;
-        profilesList = new ArrayList<>();
-
-        MainActivity.verifyStoragePermissions(this);
-        importData();
-
-        int[] avatars = { R.drawable.niu_jin };
-        String[] names = getResources().getStringArray(R.array.array_names);
-
-        for (int i = 0; i < characterData.size(); i++) {
-            Character curCharacter = characterData.get(i);
-            profileMap = new HashMap<>();
-            // TODO: 17-11-19 Use Bitmap as avatar. (EuclidListAdapter.java lines 83)
-            profileMap.put(EuclidListAdapter.KEY_AVATAR, avatars[0]);
-            profileMap.put(EuclidListAdapter.KEY_NAME, curCharacter.getName());
-            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, curCharacter.getShortDescription());
-            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, curCharacter.getDescription());
-            profilesList.add(profileMap);
-        }
-        mAdapter = new EuclidListAdapter(this, R.layout.list_item, profilesList);
-        return mAdapter;
-    }
-
     private TextView text;
     private void setListViewOnClickedEvent() {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -267,6 +242,36 @@ public class CharactersActivity extends EuclidActivity {
         mCursor.close();
         db.close();
     }
+
+    /**
+     * The function gets data by function importData()
+     * @return The adapter for this activity to create listview
+     */
+    @Override
+    protected BaseAdapter getAdapter() {
+        Map<String, Object> profileMap;
+        profilesList = new ArrayList<>();
+
+        MainActivity.verifyStoragePermissions(this);
+        importData();
+
+        int[] avatars = { R.drawable.niu_jin };
+        String[] names = getResources().getStringArray(R.array.array_names);
+
+        for (int i = 0; i < characterData.size(); i++) {
+            Character curCharacter = characterData.get(i);
+            profileMap = new HashMap<>();
+            // TODO: 17-11-19 Use Bitmap as avatar. (EuclidListAdapter.java lines 83)
+            profileMap.put(EuclidListAdapter.KEY_AVATAR, avatars[0]);
+            profileMap.put(EuclidListAdapter.KEY_NAME, curCharacter.getName());
+            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, curCharacter.getShortDescription());
+            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, curCharacter.getDescription());
+            profilesList.add(profileMap);
+        }
+        mAdapter = new EuclidListAdapter(this, R.layout.list_item, profilesList);
+        return mAdapter;
+    }
+
 
     /**
      * Event handler when receive the allow/denied choice
