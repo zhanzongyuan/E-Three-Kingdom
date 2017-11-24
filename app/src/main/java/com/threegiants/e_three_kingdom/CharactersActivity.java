@@ -119,6 +119,7 @@ public class CharactersActivity extends EuclidActivity {
                 ImageView favorite_button = (ImageView) mButtonProfile.findViewById(R.id.favorite_button);
                 TextView nameView = (TextView) findViewById(R.id.text_view_profile_name);
                 String name = nameView.getText().toString();
+                // TODO: 17-11-25 点击收藏按钮有bug，点击闪退，可能是数据库的问题 
                 if (ifFavorite(name)) {
                     favorite_button.setImageResource(R.drawable.favorite_border);
                     addToFavoriteOrInverse(name, false);
@@ -187,6 +188,7 @@ public class CharactersActivity extends EuclidActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 mAdapter.removeData(text.getText().toString());
+                                // TODO: 17-11-25 数据删除有bug，点击删除后闪退，应该是数据库的问题，在内存测试时没问题 
                                 removeDataFromDB(text.getText().toString());
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -258,15 +260,12 @@ public class CharactersActivity extends EuclidActivity {
 
         int[] avatars = { R.drawable.niu_jin };
         String[] names = getResources().getStringArray(R.array.array_names);
-
-        Resources res = getResources();
-        // TODO: 17-11-25 张涵玮任务：载入人物图片到bmp数组中 
-        Bitmap[] bmp = {BitmapFactory.decodeResource(res, R.drawable.niu_jin)};
-
+        
         for (int i = 0; i < characterData.size(); i++) {
             Character curCharacter = characterData.get(i);
             profileMap = new HashMap<>();
-            profileMap.put(EuclidListAdapter.KEY_AVATAR, bmp[0]);
+            // TODO: 17-11-25 张涵玮任务：人物图片显示位置不对，打开详情有些人物的头部被遮盖，请调整图片 
+            profileMap.put(EuclidListAdapter.KEY_AVATAR, curCharacter.getIcon());
             profileMap.put(EuclidListAdapter.KEY_NAME, curCharacter.getName());
             profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, curCharacter.getShortDescription());
             profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, curCharacter.getDescription());
