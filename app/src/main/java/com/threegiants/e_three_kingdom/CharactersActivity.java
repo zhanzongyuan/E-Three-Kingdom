@@ -232,6 +232,12 @@ public class CharactersActivity extends EuclidActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        syncCharacers();
+    }
+
+    @Override
     protected void initList() {
         mListViewAnimationAdapter = new SwingLeftInAnimationAdapter(getAdapter());
         mListViewAnimationAdapter.setAbsListView(mListView);
@@ -553,5 +559,26 @@ public class CharactersActivity extends EuclidActivity {
         map.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, character.getDescription());
         return map;
 
+    }
+
+    /**
+     * Rewrite the data to the database
+     */
+    private void syncCharacers() {
+        SQLiteDatabase db = dataBaseHelper.getPackageDatabase();
+        for (int i = 0; i < characterData.size(); i++) {
+            Character buf = characterData.get(i);
+            db.execSQL(
+                    "UPDATE characters " +
+                    "SET name ='" + buf.getName() + "', " +
+                        "gender = '" + buf.getGender() + "', " +
+                        "birth = '" + buf.getBirth() + "', " +
+                        "homeTown = '" + buf.getHomeTown() + "', " +
+                        "camp = '" + buf.getCamp() + "', " +
+                        "description = '" + buf.getDescription() + "', " +
+                        "note = '" + buf.getNote() + "' " +
+                    "WHERE _id = " + buf.getId() + ";"
+            );
+        }
     }
 }
