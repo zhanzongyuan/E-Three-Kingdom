@@ -72,6 +72,7 @@ public class CharactersActivity extends EuclidActivity {
         initialView(); //初始化listview界面
         setListViewOnClickedEvent(); //设置listview点击事件
         setFavoriteButton(); //设置收藏按钮
+        setAddNoteButton();
     }
 
     private void initialView() {
@@ -118,6 +119,57 @@ public class CharactersActivity extends EuclidActivity {
         });
     }
 
+    /**
+     * Set click to add note button
+     */
+    private void setAddNoteButton() {
+        ImageView addNote = (ImageView) findViewById(R.id.add_note_button);
+        addNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setNoteEditDialog(v);
+                dialog.show();
+            }
+        });
+    }
+
+    /**
+     * Make dialog to edit note
+     * @param v
+     */
+    private void setNoteEditDialog(View v) {
+        String originalName = mTextViewProfileName.getText().toString();
+        int index = 0;
+        for (int i = 0; i < characterData.size(); i++)
+            if (characterData.get(i).getName().equals(originalName)) {
+                index = i;
+                break;
+            }
+        final int finalObjectIndex = index;
+
+        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        View contview = factory.inflate(R.layout.edit_description_dialog, null);
+
+        TextView dialogTitle = (TextView) contview.findViewById(R.id.dialog_title);
+        dialogTitle.setText("笔记：");
+
+        //Get editDialog editText
+        final EditText editNote = (EditText) contview.findViewById(R.id.edit_description);
+        editNote.setText(characterData.get(finalObjectIndex).getNote());
+
+        Button btOK = (Button) contview.findViewById(R.id.edit_ok);
+        btOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                characterData.get(finalObjectIndex).setNote(editNote.getText().toString());
+                Toast.makeText(CharactersActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
+        dialog=new AlertDialog.Builder(CharactersActivity.this).setView(contview).create();
+    }
+
+
     private void setFavoriteButton() {
         mButtonProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,11 +181,9 @@ public class CharactersActivity extends EuclidActivity {
                 if (ifFavorite(name)) {
                     favorite_button.setImageResource(R.drawable.favorite_border);
                     addToFavoriteOrInverse(name, false);
-                    Toast.makeText(CharactersActivity.this, "长按内容可纠错", Toast.LENGTH_SHORT).show();
                 } else {
                     favorite_button.setImageResource(R.drawable.favorite);
                     addToFavoriteOrInverse(name, true);
-                    Toast.makeText(CharactersActivity.this, "长按内容可纠错", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -208,21 +258,48 @@ public class CharactersActivity extends EuclidActivity {
             }
         });
 
-        //Set long-click edit windows
-        final View nameText = findViewById(R.id.first_edit_block);
-        nameText.setOnLongClickListener(new View.OnLongClickListener() {
+        //Set click and long-click edit windows for base info
+        final View baseInfoText = findViewById(R.id.first_edit_block);
+        baseInfoText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CharactersActivity.this, "长按内容可纠错", Toast.LENGTH_SHORT).show();
+            }
+        });
+        baseInfoText.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                setEditDialog(v);
+                setBaseInfoEditDialog(v);
+                dialog.show();
+                return false;
+            }
+        });
+
+        //Set click and long-click edit windows for description
+        View descriptionText = findViewById(R.id.text_view_profile_description);
+        descriptionText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CharactersActivity.this, "长按内容可纠错", Toast.LENGTH_SHORT).show();
+            }
+        });
+        descriptionText.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                setDescriptionEditDialog(v);
                 dialog.show();
                 return false;
             }
         });
     }
-    private void setEditDialog(View v){
+
+    /**
+     * Make dialog to edit character base info
+     * @param v
+     */
+    private void setBaseInfoEditDialog(View v) {
         LayoutInflater factory = LayoutInflater.from(getApplicationContext());
-        // 引入一个外部布局
-        View contview = factory.inflate(R.layout.edit_dialog_layout, null);
+        View contview = factory.inflate(R.layout.edit_base_info_dialog, null);
 
         //Get editDialog editText
         final EditText editName = (EditText) contview.findViewById(R.id.edit_name);
@@ -247,29 +324,74 @@ public class CharactersActivity extends EuclidActivity {
                 String originalName = mTextViewProfileName.getText().toString();
                 for (int i = 0; i < characterData.size(); i++) {
                     if (characterData.get(i).getName().equals(originalName)) {
-                        Map<String, Object> editedMap = new HashMap<>();
-
                         String name = editName.getText().toString();
                         String gender = editGender.getText().toString();
                         String birth = editBirth.getText().toString();
                         String hometown = editHometown.getText().toString();
                         String camp = editCamp.getText().toString();
 
-                        editedMap.put(EuclidListAdapter.KEY_NAME, name);
-                        editedMap.put(EuclidListAdapter.KEY_GENDER, gender);
-                        editedMap.put(EuclidListAdapter.KEY_BIRTH, birth);
-                        editedMap.put(EuclidListAdapter.KEY_HOMETOWN, hometown);
-                        editedMap.put(EuclidListAdapter.KEY_CAMP, camp);
-                        editedMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, characterData.get(i).getDescription());
-                        editedMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, characterData.get(i).getShortDescription());
-                        editedMap.put(EuclidListAdapter.KEY_AVATAR, characterData.get(i).getIcon());
-
+                        characterData.get(i).setName(name);
+                        characterData.get(i).setGender(gender);
+                        characterData.get(i).setBirth(birth);
+                        characterData.get(i).setHomeTown(hometown);
+                        characterData.get(i).setCamp(camp);
+                        //Refresh detail page
                         mTextViewProfileName.setText(name);
                         mTextViewProfileGender.setText(gender);
                         mTextViewProfileBirth.setText(birth);
                         mTextViewProfileHometown.setText(hometown);
                         mTextViewProfileCamp.setText(camp);
 
+
+                        Map<String, Object> editedMap = getCharacterMapFormat(characterData.get(i));
+                        mAdapter.editData(i, editedMap);
+                        mAdapter.notifyDataSetChanged();
+
+                        break;
+                    }
+                }
+                //Update Database
+
+
+                Toast.makeText(CharactersActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+            }
+        });
+        dialog=new AlertDialog.Builder(CharactersActivity.this).setView(contview).create();
+    }
+
+
+
+    /**
+     * Make dialog to edit character description
+     * @param v
+     */
+    private void setDescriptionEditDialog(View v) {
+        LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+        View contview = factory.inflate(R.layout.edit_description_dialog, null);
+
+        //Get editDialog editText
+        final EditText editDescription = (EditText) contview.findViewById(R.id.edit_description);
+
+        editDescription.setText(mTextViewProfileDescription.getText());
+
+        Button btOK = (Button) contview.findViewById(R.id.edit_ok);
+        btOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Change character list
+                //Update mAdapter
+
+                String originalName = mTextViewProfileName.getText().toString();
+                for (int i = 0; i < characterData.size(); i++) {
+                    if (characterData.get(i).getName().equals(originalName)) {
+                        String description = editDescription.getText().toString();
+
+                        characterData.get(i).setDescription(description);
+                        //Refresh detail page
+                        mTextViewProfileDescription.setText(description);
+
+                        Map<String, Object> editedMap = getCharacterMapFormat(characterData.get(i));
                         mAdapter.editData(i, editedMap);
                         mAdapter.notifyDataSetChanged();
 
@@ -349,16 +471,8 @@ public class CharactersActivity extends EuclidActivity {
         
         for (int i = 0; i < characterData.size(); i++) {
             Character curCharacter = characterData.get(i);
-            profileMap = new HashMap<>();
-            // TODO: 17-11-25 张涵玮任务：人物图片显示位置不对，打开详情有些人物的头部被遮盖，请调整图片 
-            profileMap.put(EuclidListAdapter.KEY_AVATAR, curCharacter.getIcon());
-            profileMap.put(EuclidListAdapter.KEY_NAME, curCharacter.getName());
-            profileMap.put(EuclidListAdapter.KEY_GENDER, curCharacter.getGender());
-            profileMap.put(EuclidListAdapter.KEY_BIRTH, curCharacter.getBirth());
-            profileMap.put(EuclidListAdapter.KEY_HOMETOWN, curCharacter.getHomeTown());
-            profileMap.put(EuclidListAdapter.KEY_CAMP, curCharacter.getCamp());
-            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, curCharacter.getShortDescription());
-            profileMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, curCharacter.getDescription());
+            profileMap = getCharacterMapFormat(curCharacter);
+            // TODO: 17-11-25 张涵玮任务：人物图片显示位置不对，打开详情有些人物的头部被遮盖，请调整图片
             profilesList.add(profileMap);
         }
         mAdapter = new EuclidListAdapter(this, R.layout.list_item, profilesList);
@@ -391,5 +505,19 @@ public class CharactersActivity extends EuclidActivity {
                     }
             }
         }
+    }
+
+    private Map<String, Object> getCharacterMapFormat(Character character) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(EuclidListAdapter.KEY_AVATAR, character.getIcon());
+        map.put(EuclidListAdapter.KEY_NAME, character.getName());
+        map.put(EuclidListAdapter.KEY_GENDER, character.getGender());
+        map.put(EuclidListAdapter.KEY_BIRTH, character.getBirth());
+        map.put(EuclidListAdapter.KEY_HOMETOWN, character.getHomeTown());
+        map.put(EuclidListAdapter.KEY_CAMP, character.getCamp());
+        map.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, character.getShortDescription());
+        map.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, character.getDescription());
+        return map;
+
     }
 }
