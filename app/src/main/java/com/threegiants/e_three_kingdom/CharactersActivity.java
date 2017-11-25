@@ -62,13 +62,6 @@ public class CharactersActivity extends EuclidActivity {
     private ListView listView;
     private ImageButton returnButton; //返回按钮
 
-    //Detail page textView object
-    private TextView profileName;
-    private TextView profileGender;
-    private TextView profileBirth;
-    private TextView profileHometown;
-    private TextView profileCamp;
-
     // DataBaseHelper instance.
     private DataBaseHelper dataBaseHelper;
 
@@ -85,13 +78,6 @@ public class CharactersActivity extends EuclidActivity {
         listView = (ListView) findViewById(R.id.list_view);
         mEditText = (EditText) findViewById(R.id.search_text);
         returnButton = (ImageButton) findViewById(R.id.return_button);
-
-        //Get profile info
-        profileName = (TextView) findViewById(R.id.text_view_profile_name);
-        profileGender = (TextView) findViewById(R.id.text_view_profile_gender);
-        profileBirth = (TextView) findViewById(R.id.text_view_profile_birth);
-        profileHometown = (TextView) findViewById(R.id.text_view_profile_hometown);
-        profileCamp = (TextView) findViewById(R.id.text_view_profile_camp);
 
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -228,7 +214,6 @@ public class CharactersActivity extends EuclidActivity {
             @Override
             public boolean onLongClick(View v) {
                 setEditDialog(v);
-
                 dialog.show();
                 return false;
             }
@@ -240,23 +225,59 @@ public class CharactersActivity extends EuclidActivity {
         View contview = factory.inflate(R.layout.edit_dialog_layout, null);
 
         //Get editDialog editText
-        EditText editName = (EditText) contview.findViewById(R.id.edit_name);
-        EditText editGender = (EditText) contview.findViewById(R.id.edit_gender);
-        EditText editBirth = (EditText) contview.findViewById(R.id.edit_birth);
-        EditText editHometown = (EditText) contview.findViewById(R.id.edit_hometown);
-        EditText editCamp = (EditText) contview.findViewById(R.id.edit_camp);
+        final EditText editName = (EditText) contview.findViewById(R.id.edit_name);
+        final EditText editGender = (EditText) contview.findViewById(R.id.edit_gender);
+        final EditText editBirth = (EditText) contview.findViewById(R.id.edit_birth);
+        final EditText editHometown = (EditText) contview.findViewById(R.id.edit_hometown);
+        final EditText editCamp = (EditText) contview.findViewById(R.id.edit_camp);
 
-        editName.setText(profileName.getText());
-        editGender.setText(profileGender.getText());
-        editBirth.setText(profileBirth.getText());
-        editHometown.setText(profileHometown.getText());
-        editCamp.setText(profileCamp.getText());
+        editName.setText(mTextViewProfileName.getText());
+        editGender.setText(mTextViewProfileGender.getText());
+        editBirth.setText(mTextViewProfileBirth.getText());
+        editHometown.setText(mTextViewProfileHometown.getText());
+        editCamp.setText(mTextViewProfileCamp.getText());
 
         Button btOK = (Button) contview.findViewById(R.id.edit_ok);
         btOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Changle character list
+                //Change character list
+                //Update mAdapter
+
+                String originalName = mTextViewProfileName.getText().toString();
+                for (int i = 0; i < characterData.size(); i++) {
+                    if (characterData.get(i).getName().equals(originalName)) {
+                        Map<String, Object> editedMap = new HashMap<>();
+
+                        String name = editName.getText().toString();
+                        String gender = editGender.getText().toString();
+                        String birth = editBirth.getText().toString();
+                        String hometown = editHometown.getText().toString();
+                        String camp = editCamp.getText().toString();
+
+                        editedMap.put(EuclidListAdapter.KEY_NAME, name);
+                        editedMap.put(EuclidListAdapter.KEY_GENDER, gender);
+                        editedMap.put(EuclidListAdapter.KEY_BIRTH, birth);
+                        editedMap.put(EuclidListAdapter.KEY_HOMETOWN, hometown);
+                        editedMap.put(EuclidListAdapter.KEY_CAMP, camp);
+                        editedMap.put(EuclidListAdapter.KEY_DESCRIPTION_FULL, characterData.get(i).getDescription());
+                        editedMap.put(EuclidListAdapter.KEY_DESCRIPTION_SHORT, characterData.get(i).getShortDescription());
+                        editedMap.put(EuclidListAdapter.KEY_AVATAR, characterData.get(i).getIcon());
+
+                        mTextViewProfileName.setText(name);
+                        mTextViewProfileGender.setText(gender);
+                        mTextViewProfileBirth.setText(birth);
+                        mTextViewProfileHometown.setText(hometown);
+                        mTextViewProfileCamp.setText(camp);
+
+                        mAdapter.editData(i, editedMap);
+                        mAdapter.notifyDataSetChanged();
+
+                        break;
+                    }
+                }
+                //Update Database
+
 
                 Toast.makeText(CharactersActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                 dialog.cancel();

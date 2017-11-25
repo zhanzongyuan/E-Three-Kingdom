@@ -204,4 +204,13 @@ public class EuclidListAdapter extends ArrayAdapter<Map<String, Object>> impleme
             }
         }
     }
+
+    /**
+     * Edit object in data list
+     * @param editedMap
+     */
+    public void editData(int i, Map<String, Object> editedMap) {
+        mOriginalData.set(i, editedMap);
+        mData.set(i, editedMap);
+    }
 }
