@@ -339,7 +339,6 @@ public class CharactersActivity extends EuclidActivity {
                         mTextViewProfileHometown.setText(hometown);
                         mTextViewProfileCamp.setText(camp);
 
-
                         Map<String, Object> editedMap = getCharacterMapFormat(characterData.get(i));
                         mAdapter.editData(i, editedMap);
                         mAdapter.notifyDataSetChanged();
@@ -415,7 +414,9 @@ public class CharactersActivity extends EuclidActivity {
         db.execSQL("DELETE FROM characters WHERE name = '" + name + "';");
     }
 
-    // Import data from db
+    /**
+     * Import data from db
+     */
     protected void importData(){
         characterData=new ArrayList<>();
 
