@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nhaarman.listviewanimations.appearance.ViewAnimator;
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter;
@@ -69,6 +70,7 @@ public abstract class EuclidActivity extends Activity {
     protected TextView mTextViewProfileCamp;
 
     protected View mButtonProfile;
+    protected ImageView mAddNoteButton;
     protected EditText mEditText;
 
     public static ShapeDrawable sOverlayShape;
@@ -144,6 +146,7 @@ public abstract class EuclidActivity extends Activity {
                 mState = EuclidState.Opening;
                 choosed_id = id;
                 showProfileDetails((Map<String, Object>) parent.getItemAtPosition(position), view);
+                Toast.makeText(EuclidActivity.this, "长按内容可纠错", Toast.LENGTH_SHORT).show();
             }
         });
     }
