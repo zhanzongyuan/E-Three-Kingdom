@@ -1,4 +1,4 @@
-﻿package com.threegiants.e_three_kingdom;
+package com.threegiants.e_three_kingdom;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -272,19 +272,18 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
+            Intent intent = new Intent();
             final int clickedPosition = recyclerView.getChildAdapterPosition(view);
             if (clickedPosition == activeCardPosition) {
                 switch (activeCardPosition){
                     case 0:
                         //Toast.makeText(MainActivity.this, "收藏夹功能尚未开发，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent();
                         intent.setClass(context, CharactersActivity.class);
                         intent.putExtra("fav", true);
                         startActivityForResult(intent, 1);
                         break;
                     case 1:
                         //Toast.makeText(MainActivity.this, "三国人物功能正在开发中，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent();
                         intent.setClass(context, CharactersActivity.class);
                         intent.putExtra("fav", false);
                         startActivityForResult(intent, 1);

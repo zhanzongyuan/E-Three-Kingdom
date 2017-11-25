@@ -1,4 +1,4 @@
-﻿package com.threegiants.e_three_kingdom;
+package com.threegiants.e_three_kingdom;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
