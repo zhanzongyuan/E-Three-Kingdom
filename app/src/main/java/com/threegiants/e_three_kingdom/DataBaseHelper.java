@@ -63,7 +63,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         // Open the database.
-        packageDatabase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.OPEN_READONLY);
+        packageDatabase = SQLiteDatabase.openDatabase(mPath, null, SQLiteDatabase.OPEN_READWRITE);
     }
 
     /**
