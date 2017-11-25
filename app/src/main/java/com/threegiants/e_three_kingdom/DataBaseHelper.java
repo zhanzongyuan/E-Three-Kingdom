@@ -21,7 +21,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     // The path of .db file.
     private static String DB_PATH =
             Environment.getExternalStorageDirectory().getPath() +
-            "/data/data" +
+            "/data/" +
             BuildConfig.APPLICATION_ID +
             "/";
 

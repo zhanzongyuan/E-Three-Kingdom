@@ -5,6 +5,9 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.DatabaseErrorHandler;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.graphics.drawable.ShapeDrawable;
@@ -77,11 +80,11 @@ public abstract class EuclidActivity extends Activity {
     static int sScreenWidth;
     static int sProfileImageHeight;
 
-    private SwingLeftInAnimationAdapter mListViewAnimationAdapter;
-    private ViewAnimator mListViewAnimator;
+    protected SwingLeftInAnimationAdapter mListViewAnimationAdapter;
+    protected ViewAnimator mListViewAnimator;
 
-    private View mOverlayListItemView;
-    private EuclidState mState = EuclidState.Closed;
+    protected View mOverlayListItemView;
+    protected EuclidState mState = EuclidState.Closed;
 
     private float mInitialProfileButtonX;
 
@@ -89,7 +92,7 @@ public abstract class EuclidActivity extends Activity {
     private AnimatorSet mCloseProfileAnimatorSet;
     private Animation mProfileButtonShowAnimation;
     //新加变量
-    private long choosed_id;
+    protected long choosed_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +134,7 @@ public abstract class EuclidActivity extends Activity {
         initList();
     }
 
-    private void initList() {
+    protected void initList() {
         mListViewAnimationAdapter = new SwingLeftInAnimationAdapter(getAdapter());
         mListViewAnimationAdapter.setAbsListView(mListView);
         mListViewAnimator = mListViewAnimationAdapter.getViewAnimator();
@@ -147,9 +150,14 @@ public abstract class EuclidActivity extends Activity {
                 choosed_id = id;
                 showProfileDetails((Map<String, Object>) parent.getItemAtPosition(position), view);
                 Toast.makeText(EuclidActivity.this, "长按内容可纠错", Toast.LENGTH_SHORT).show();
+
+                // Initialize star.
+                ImageView favorite_button = (ImageView) mButtonProfile.findViewById(R.id.favorite_button);
+
             }
         });
     }
+
 
     /**
      * This method counts delay before profile toolbar and profile details start their transition
@@ -158,7 +166,7 @@ public abstract class EuclidActivity extends Activity {
      * @param item - data from adapter, that will be set into overlay view.
      * @param view - clicked view.
      */
-    private void showProfileDetails(Map<String, Object> item, final View view) {
+    protected void showProfileDetails(Map<String, Object> item, final View view) {
         mListView.setEnabled(false);
         mEditText.setEnabled(false);
         int profileDetailsAnimationDelay = getMaxDelayShowDetailsAnimation() * Math.abs(view.getTop())

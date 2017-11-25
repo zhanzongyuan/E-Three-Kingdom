@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.view.inputmethod.*;
 
+import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter;
 import com.yalantis.euclid.library.EuclidActivity;
 import com.yalantis.euclid.library.EuclidListAdapter;
 import com.yalantis.euclid.library.EuclidState;
@@ -228,6 +229,35 @@ public class CharactersActivity extends EuclidActivity {
         boolean charFavourite = c.getInt(0) == 1;
         c.close();
         return charFavourite;
+    }
+
+    @Override
+    protected void initList() {
+        mListViewAnimationAdapter = new SwingLeftInAnimationAdapter(getAdapter());
+        mListViewAnimationAdapter.setAbsListView(mListView);
+        mListViewAnimator = mListViewAnimationAdapter.getViewAnimator();
+        if (mListViewAnimator != null) {
+            mListViewAnimator.setAnimationDurationMillis(getAnimationDurationCloseProfileDetails());
+            mListViewAnimator.disableAnimations();
+        }
+        mListView.setAdapter(mListViewAnimationAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mState = EuclidState.Opening;
+                choosed_id = id;
+                showProfileDetails((Map<String, Object>) parent.getItemAtPosition(position), view);
+                Toast.makeText(CharactersActivity.this, "长按内容可纠错", Toast.LENGTH_SHORT).show();
+
+                // Initialize star.
+                ImageView favorite_button = (ImageView) mButtonProfile.findViewById(com.yalantis.euclid.library.R.id.favorite_button);
+                if (ifFavorite(mTextViewProfileName.getText().toString())) {
+                    favorite_button.setImageResource(R.drawable.favorite);
+                } else {
+                    favorite_button.setImageResource(R.drawable.favorite_border);
+                }
+            }
+        });
     }
 
     private TextView text;
@@ -438,7 +468,7 @@ public class CharactersActivity extends EuclidActivity {
             String shortDescription = mCursor.getString(6);
             String description = mCursor.getString(7);
             byte[] iconArr = mCursor.getBlob(8);
-            String note = mCursor.getString(10);
+            String note = mCursor.getString(9);
             Bitmap icon = BitmapFactory.decodeByteArray(iconArr, 0, iconArr.length);
             Character curCharacter = new Character(
                     id, name, gender, birth, homeTown, camp, shortDescription, description, icon,
