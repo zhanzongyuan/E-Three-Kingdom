@@ -1,4 +1,4 @@
-package com.threegiants.e_three_kingdom;
+﻿package com.threegiants.e_three_kingdom;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -444,6 +444,7 @@ public class CharactersActivity extends EuclidActivity {
      */
     protected void importData(){
         characterData=new ArrayList<>();
+        boolean fav = getIntent().getBooleanExtra("fav", false);
 
         // Open our database.
         dataBaseHelper = new DataBaseHelper(this);
@@ -454,6 +455,10 @@ public class CharactersActivity extends EuclidActivity {
 
         // Generate character object for each row, and add it to characterData.
         while (mCursor.moveToNext()) {
+            int isFav = mCursor.getInt(10);
+            if (fav && (isFav == 0)) {
+                continue;
+            }
             int id = mCursor.getInt(0);
             String name = mCursor.getString(1);
             String gender = mCursor.getString(2);
