@@ -3,20 +3,18 @@ package com.threegiants.e_three_kingdom;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
@@ -82,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
 
+    private MediaPlayer mp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +91,15 @@ public class MainActivity extends AppCompatActivity {
         initRecyclerView();
         iniFunctionText();
         initSwitchers();
+        getMusicPlayer();
+    }
+
+    private void getMusicPlayer() {
+        mp = new MediaPlayer();
+        mp = MediaPlayer.create(this, R.raw.bgm_1);
+        //mp.prepare();
+        mp.setLooping(true); //设置循环播放
+        mp.start();
     }
 
     @Override
@@ -280,12 +288,14 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(MainActivity.this, "收藏夹功能尚未开发，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
                         intent.setClass(context, CharactersActivity.class);
                         intent.putExtra("fav", true);
+                        mp.stop();
                         startActivityForResult(intent, 1);
                         break;
                     case 1:
                         //Toast.makeText(MainActivity.this, "三国人物功能正在开发中，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
                         intent.setClass(context, CharactersActivity.class);
                         intent.putExtra("fav", false);
+                        mp.stop();
                         startActivityForResult(intent, 1);
                         break;
                     default:
@@ -376,6 +386,13 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == R.integer.CharactersActivity_return_MainActivity) {
 
         }
+        getMusicPlayer();
         //从CharacterActivity返回
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mp.stop();
     }
 }

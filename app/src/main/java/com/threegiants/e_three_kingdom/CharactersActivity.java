@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.Editable;
@@ -54,6 +55,7 @@ public class CharactersActivity extends EuclidActivity {
 
     // DataBaseHelper instance.
     private DataBaseHelper dataBaseHelper;
+    private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,15 @@ public class CharactersActivity extends EuclidActivity {
         setListViewOnClickedEvent(); //设置listview点击事件
         setFavoriteButton(); //设置收藏按钮
         setAddNoteButton();
+        getMusicService(); //绑定音乐服务
+    }
+
+    private void getMusicService() {
+        mp = new MediaPlayer();
+        mp = MediaPlayer.create(this, R.raw.bgm_3);
+        //mp.prepare();
+        mp.setLooping(true); //设置循环播放
+        mp.start();
     }
 
     private void initialView() {
@@ -574,5 +585,53 @@ public class CharactersActivity extends EuclidActivity {
                     "WHERE _id = " + buf.getId() + ";"
             );
         }
+    }
+
+    //Music Service
+
+/*    public ServiceConnection serviceConnection;
+    public IBinder mBinder;
+    private void myBindService() {
+        System.out.println("Bind service!");
+        initialServiceConnection(); //初始化连接的信息
+        Intent intent = new Intent(this, MusicService.class); //申请远程服务
+        startService(intent); //启动远程服务
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE); //绑定服务
+    }
+
+    private void initialServiceConnection() {
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                Log.d("service", "connected");
+                System.out.println("Bind finished!");
+                mBinder = service; //保留启动的service对象binder的引用
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                serviceConnection = null;
+            }
+        };
+    }
+
+    public final int START_CODE = 101, STOP_CODE = 102, QUIT_CODE = 103, REFRESH_CODE = 104, DRAG_CODE = 105, GET_DURATION_CODE = 106;
+    private int callService(int code, int d) {
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
+        try {
+            data.writeInt(d);
+            mBinder.transact(code, data, reply, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int replyData = reply.readInt();
+        return replyData;
+    }
+*/
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mp.stop();
     }
 }
