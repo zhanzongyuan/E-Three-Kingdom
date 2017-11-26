@@ -22,6 +22,8 @@
         <activity android:name=".CharactersActivity"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <service android:name=".MusicService"
+                 android:exported="true"></service>
     </application>
 
 </manifest>

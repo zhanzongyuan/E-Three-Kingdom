@@ -55,7 +55,6 @@ public class CharactersActivity extends EuclidActivity {
 
     // DataBaseHelper instance.
     private DataBaseHelper dataBaseHelper;
-    private MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +64,6 @@ public class CharactersActivity extends EuclidActivity {
         setListViewOnClickedEvent(); //设置listview点击事件
         setFavoriteButton(); //设置收藏按钮
         setAddNoteButton();
-        getMusicService(); //绑定音乐服务
-    }
-
-    private void getMusicService() {
-        mp = new MediaPlayer();
-        mp = MediaPlayer.create(this, R.raw.bgm_4);
-        //mp.prepare();
-        mp.setLooping(true); //设置循环播放
-        mp.start();
     }
 
     private void initialView() {
@@ -587,9 +577,9 @@ public class CharactersActivity extends EuclidActivity {
         }
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mp.stop();
     }
 }

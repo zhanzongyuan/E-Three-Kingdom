@@ -4,14 +4,18 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.IBinder;
+import android.os.Parcel;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.ActivityCompat;
@@ -19,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,28 +88,16 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
 
-    private MediaPlayer mp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_main);
-
-
         initRecyclerView();
         iniFunctionText();
         initSwitchers();
-        getMusicPlayer();
+        myBindService();
     }
-
-    private void getMusicPlayer() {
-        mp = new MediaPlayer();
-        mp = MediaPlayer.create(this, R.raw.bgm_5);
-        //mp.prepare();
-        mp.setLooping(true); //设置循环播放
-        mp.start();
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -291,14 +284,12 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(MainActivity.this, "收藏夹功能尚未开发，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
                         intent.setClass(context, CharactersActivity.class);
                         intent.putExtra("fav", true);
-                        mp.stop();
                         startActivityForResult(intent, 1);
                         break;
                     case 1:
                         //Toast.makeText(MainActivity.this, "三国人物功能正在开发中，敬请期待(>3<)~", Toast.LENGTH_SHORT).show();
                         intent.setClass(context, CharactersActivity.class);
                         intent.putExtra("fav", false);
-                        mp.stop();
                         startActivityForResult(intent, 1);
                         break;
                     default:
@@ -389,14 +380,53 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == R.integer.CharactersActivity_return_MainActivity) {
 
         }
-        getMusicPlayer();
         //从CharacterActivity返回
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mp.stop();
+        callService(STOP_CODE, -1);
+    }
+
+    private ServiceConnection serviceConnection;
+    private IBinder mBinder;
+    private void myBindService() {
+        initialServiceConnection(); //初始化连接的信息
+        Intent intent = new Intent(this, MusicService.class); //申请远程服务
+        startService(intent); //启动远程服务
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE); //绑定服务
+    }
+
+    private void initialServiceConnection() {
+        serviceConnection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                Log.d("service", "connected");
+                System.out.println("Bind OK!");
+                mBinder = service; //保留启动的service对象binder的引用
+                callService(START_CODE, -1);
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                serviceConnection = null;
+            }
+        };
+    }
+
+    private final int START_CODE = 101, STOP_CODE = 102, QUIT_CODE = 103, REFRESH_CODE = 104, DRAG_CODE = 105, GET_DURATION_CODE = 106;
+    private int callService(int code, int d) {
+        Parcel data = Parcel.obtain();
+        Parcel reply = Parcel.obtain();
+        try {
+            data.writeInt(d);
+            mBinder.transact(code, data, reply, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int replyData = reply.readInt();
+        return replyData;
     }
 
 }
