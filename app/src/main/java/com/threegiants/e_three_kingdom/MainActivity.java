@@ -3,8 +3,10 @@ package com.threegiants.e_three_kingdom;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -16,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMusicPlayer() {
         mp = new MediaPlayer();
-        mp = MediaPlayer.create(this, R.raw.bgm_1);
+        mp = MediaPlayer.create(this, R.raw.bgm_5);
         //mp.prepare();
         mp.setLooping(true); //设置循环播放
         mp.start();
@@ -395,4 +398,5 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         mp.stop();
     }
+
 }
